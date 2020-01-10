@@ -7,6 +7,7 @@ import * as util from "./util";
 import * as crypto from "crypto";
 
 const projectName = pulumi.getProject();
+const stackName = pulumi.getStack();
 
 //============================================================================== 
 /*
@@ -16,7 +17,7 @@ const projectName = pulumi.getProject();
 
 // Create the GKE cluster developers ServiceAccount.
 const devsName = "devs";
-const devsAccountId = `k8s-${devsName}-${crypto.randomBytes(4).toString("hex")}`;
+const devsAccountId = `k8s-${stackName}-${devsName}`;
 const devsIamServiceAccount = new gcp.serviceAccount.Account(devsName, {
     project: config.gcpProject,
     accountId: devsAccountId,
