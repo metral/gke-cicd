@@ -1,13 +1,12 @@
 name: Pulumi
 on:
-  push:
-    branches:
-      - master
+  pull_request:
+    types: [assigned, opened, synchronize, reopened]
     paths:
-      - 'infra/**'
+      - 'app/**'
 jobs:
-  up:
-    name: Update
+  preview:
+    name: Preview
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -18,13 +17,15 @@ jobs:
           args: config set gcp:zone us-west1-a && pulumi config set gcp:project pulumi-development
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
-          PULUMI_CI: up
-          PULUMI_ROOT: infra
+          PULUMI_CI: pr
+          PULUMI_ROOT: app
       - uses: docker://pulumi/actions
         with:
-          args: up
+          args: preview -s dev && pulumi preview --diff -s dev
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
-          PULUMI_CI: up
-          PULUMI_ROOT: infra
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COMMENT_ON_PR: 1
+          PULUMI_CI: pr
+          PULUMI_ROOT: app
