@@ -1,0 +1,24 @@
+name: Pulumi
+on:
+  pull_request:
+    types: [assigned, opened, synchronize, reopened]
+    paths: 'infra/**'
+jobs:
+  preview:
+    name: Preview
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+      - run: scripts/set-infra-config.sh
+      - uses: docker://pulumi/actions
+        with:
+          args: preview -s dev
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COMMENT_ON_PR: 1
+          PULUMI_CI: pr
+          PULUMI_ROOT: infra
