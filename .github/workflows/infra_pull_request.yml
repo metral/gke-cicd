@@ -14,14 +14,15 @@ jobs:
           fetch-depth: 1
       - uses: docker://pulumi/actions
         with:
-          args: config set gcp:zone us-west1-a && pulumi config set gcp:project pulumi-development
+          args: stack select -s dev && pulumi config set gcp:zone us-west1-a && pulumi config set gcp:project pulumi-development
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PULUMI_CI: pr
           PULUMI_ROOT: infra
       - uses: docker://pulumi/actions
         with:
-          args: preview -s dev && pulumi preview --diff -s dev
+          args: stack select -s dev && pulumi preview && pulumi preview --diff
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
@@ -42,15 +43,16 @@ jobs:
           args: stack init ${{ github.sha }} && pulumi config set gcp:zone us-west1-a && pulumi config set gcp:project pulumi-development
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
-          PULUMI_CI: up
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PULUMI_CI: pr
           PULUMI_ROOT: infra
       - uses: docker://pulumi/actions
         with:
-          args: up
+          args: stack select -s ${{ github.sha }} && pulumi up
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
-          PULUMI_CI: up -s ${{ github.sha }}
-          PULUMI_ROOT: infra
-          COMMENT_ON_PR: 1
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COMMENT_ON_PR: 1
+          PULUMI_CI: pr
+          PULUMI_ROOT: infra
