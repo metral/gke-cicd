@@ -29,3 +29,28 @@ jobs:
           COMMENT_ON_PR: 1
           PULUMI_CI: pr
           PULUMI_ROOT: infra
+  test-cluster:
+    name: Test Cluster
+    needs: preview
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+      - uses: docker://pulumi/actions
+        with:
+          args: stack init ${{ github.sha }} && pulumi config set gcp:zone us-west1-a && pulumi config set gcp:project pulumi-development
+        env:
+          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+          PULUMI_CI: up
+          PULUMI_ROOT: infra
+      - uses: docker://pulumi/actions
+        with:
+          args: up
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+          PULUMI_CI: up -s ${{ github.sha }}
+          PULUMI_ROOT: infra
+          COMMENT_ON_PR: 1
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
