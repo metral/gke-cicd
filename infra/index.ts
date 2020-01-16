@@ -17,7 +17,8 @@ const stackName = pulumi.getStack();
 
 // Create the GKE cluster developers ServiceAccount.
 const devsName = "devs";
-const devsAccountId = `k8s-${stackName.substring(0-7)}-${devsName}`;
+const shortStackName= stackName.substr(0,7);
+const devsAccountId = `k8s-${shortStackName}-${devsName}`;
 const devsIamServiceAccount = new gcp.serviceAccount.Account(devsName, {
     project: config.gcpProject,
     accountId: devsAccountId,
