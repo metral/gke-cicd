@@ -57,6 +57,17 @@ const cluster = new gcp.container.Cluster(`${projectName}`, {
     minMasterVersion: "1.14.8-gke.12",
     // minMasterVersion: "1.15.7-gke.2",
     masterAuth: { username: "example-user", password: password },
+    nodeConfig: {
+        machineType: "n1-standard-1",
+        oauthScopes: [
+            "https://www.googleapis.com/auth/compute",
+            "https://www.googleapis.com/auth/devstorage.read_only",
+            "https://www.googleapis.com/auth/logging.write",
+            "https://www.googleapis.com/auth/monitoring",
+        ],
+        labels: {"instanceType": "n1-standard-1"},
+        tags: ["org-pulumi"],
+    },
 });
 
 export const kubeconfig = util.createKubeconfig(cluster.name, cluster.endpoint, cluster.masterAuth);
