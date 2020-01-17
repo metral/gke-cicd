@@ -112,7 +112,7 @@ const devsRole = new k8s.rbac.v1.Role(`pulumi-devs`,
         rules: [
             {
                 apiGroups: [""],
-                resources: ["configmap", "pods", "secrets", "services", "persistentvolumeclaims"],
+                resources: ["configmaps", "pods", "secrets", "services", "persistentvolumeclaims"],
                 verbs: ["get", "list", "watch", "create", "update", "delete"],
             },
             {
