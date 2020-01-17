@@ -37,7 +37,19 @@ util.bindToRole(`${devsName}-k8s`, devsIamServiceAccount, {
 const devsIamServiceAccountKey = util.createServiceAccountKey(`${devsName}Key`, devsIamServiceAccount);
 
 // Create the Developers ServiceAccount client secret to authenticate as this service account.
-export const devsIamServiceAccountSecret = util.clientSecret(devsIamServiceAccountKey);
+const devsIamServiceAccountSecret = util.clientSecret(devsIamServiceAccountKey);
+
+// Create a bucket for the Developers ServiceAccount key to be retrieved and
+// used by the Developers and CI/CD.
+export const devsBucketName = `${stackName}-sa-secret`;
+const devsBucket = new gcp.storage.Bucket(devsBucketName, {
+    name: devsBucketName,
+});
+const devsBucketObject = new gcp.storage.BucketObject(devsBucketName, {
+    bucket: devsBucket.name,
+    name: "key.json",
+    content: devsIamServiceAccountSecret.apply(s => JSON.stringify(s)),
+});
 
 //============================================================================== 
 /*
