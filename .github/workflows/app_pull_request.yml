@@ -27,7 +27,7 @@ jobs:
           PULUMI_ROOT: app
       - uses: docker://pulumi/actions
         with:
-          args: stack select -s dev && pulumi preview && pulumi preview --diff
+          args: stack select -s {{ github.sha }} && pulumi preview && pulumi preview --diff
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
