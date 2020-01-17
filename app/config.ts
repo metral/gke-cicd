@@ -16,5 +16,4 @@ export const config = {
     gkeKubeconfig: devClusterStackRef.getOutput("kubeconfig"),
     clusterName: devClusterStackRef.getOutput("clusterName"),
     appsNamespaceName: devClusterStackRef.getOutput("appsNamespaceName"),
-    devsAccountId: devClusterStackRef.getOutput("devsAccountId"),
 };
