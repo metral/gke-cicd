@@ -112,18 +112,18 @@ const devsRole = new k8s.rbac.v1.Role(`pulumi-devs`,
         rules: [
             {
                 apiGroups: [""],
-                resources: ["configmaps", "pods", "secrets", "services", "persistentvolumeclaims"],
-                verbs: ["get", "list", "watch", "create", "update", "delete"],
+                resources: ["configmaps", "pods", "secrets", "services", "endpoints", "persistentvolumeclaims"],
+                verbs: ["get", "patch", "list", "watch", "create", "update", "delete"],
             },
             {
                 apiGroups: ["rbac.authorization.k8s.io"],
                 resources: ["clusterrole", "clusterrolebinding", "role", "rolebinding"],
-                verbs: ["get", "list", "watch", "create", "update", "delete"],
+                verbs: ["get", "patch", "list", "watch", "create", "update", "delete"],
             },
             {
                 apiGroups: ["extensions", "apps"],
                 resources: ["replicasets", "deployments"],
-                verbs: ["get", "list", "watch", "create", "update", "delete"],
+                verbs: ["get", "patch", "list", "watch", "create", "update", "delete"],
             },
         ],
 }, { provider: provider });
@@ -193,6 +193,24 @@ const restrictiveClusterRole = new k8s.rbac.v1.ClusterRole("restrictive", {
             verbs: [
                 "use"
             ]
+        }
+    ]
+}, { provider: provider });
+
+// Create a ClusterRoleBinding for the ServiceAccounts of Namespace kube-system
+// to the ClusterRole that uses the restrictive PodSecurityPolicy.
+const allowRestrictedKubeSystemCRB = new k8s.rbac.v1.ClusterRoleBinding("allow-restricted-kube-system", {
+    metadata: { name: "allow-restricted-kube-system" },
+    roleRef: {
+        apiGroup: "rbac.authorization.k8s.io",
+        kind: "ClusterRole",
+        name: restrictiveClusterRole.metadata.name
+    },
+    subjects: [
+        {
+            kind: "Group",
+            name: "system:serviceaccounts",
+            namespace: "kube-system"
         }
     ]
 }, { provider: provider });
