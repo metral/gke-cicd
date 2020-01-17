@@ -5,6 +5,7 @@ import * as app from "./app";
 import {config} from "./config";
 var fs = require("fs");
 
+/*
 // Read the local (KinD) cluster's KUBECONFIG.
 var kubeconfigData = fs.readFileSync(process.env.KUBECONFIG);
 const kubeconfig: pulumi.Output<any> = pulumi.output(kubeconfigData.toString());
@@ -13,6 +14,7 @@ const kubeconfig: pulumi.Output<any> = pulumi.output(kubeconfigData.toString());
 const localProvider = new k8s.Provider("localProvider", {
     kubeconfig: kubeconfig,
 });
+*/
 
 // Create a k8s provider for the remote GKE cluster.
 const gkeProvider = new k8s.Provider("gkeProvider", {
@@ -22,7 +24,8 @@ const gkeProvider = new k8s.Provider("gkeProvider", {
 
 // Create the application on each of the selected clusters.
 const instance = new app.DemoApp("demo", {
-    provider: localProvider,
+    // provider: localProvider,
+    provider: gkeProvider,
 });
 
 export const instanceUrl = instance.url;
