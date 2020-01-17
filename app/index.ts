@@ -4,6 +4,8 @@ import * as gcp from "@pulumi/gcp";
 import * as app from "./app";
 import {config} from "./config";
 
+export const clusterName = config.clusterName;
+
 // Create a k8s provider for the remote GKE cluster.
 const gkeProvider = new k8s.Provider("gkeProvider", {
     kubeconfig: config.gkeKubeconfig,

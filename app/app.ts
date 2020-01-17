@@ -26,14 +26,14 @@ export class DemoApp extends pulumi.ComponentResource {
         const registry = gcp.container.getRegistryRepository();
 
         // Build a Docker image from a local Dockerfile context in the
-        // './node-app' directory, and push it to the registry.
-        const appName = "node-app";
+        // './go-app' directory, and push it to the registry.
+        const appName = "go-app";
         const appDockerContextPath = `./${appName}`;
-        this.imageName = pulumi.interpolate`${registry.repositoryUrl}/${appName}:v0.0.1`;
         const appImage = new docker.Image(appName, {
-            imageName: this.imageName,
+            imageName: pulumi.interpolate`${registry.repositoryUrl}/${appName}:v0.0.1`,
             build: {context: appDockerContextPath},
         });
+        this.imageName = appImage.imageName;
 
         // Create a PersistentVolumeClaim.
         this.persistentVolumeClaim = new kx.PersistentVolumeClaim("data", {
@@ -63,6 +63,7 @@ export class DemoApp extends pulumi.ComponentResource {
                     PASSWORD: this.secret.asEnvValue("password"),
                 },
                 image: this.imageName,
+                imagePullPolicy: "Always",
                 resources: {requests: {cpu: "50m", memory: "20Mi"}},
                 ports: { "http": 80 },
                 volumeMounts: [ this.persistentVolumeClaim.mount("/data") ],
