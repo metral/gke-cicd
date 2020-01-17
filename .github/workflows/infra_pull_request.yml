@@ -56,3 +56,16 @@ jobs:
           COMMENT_ON_PR: 1
           PULUMI_CI: pr
           PULUMI_ROOT: infra
+  test-cluster-cleanup:
+    name: Test Cluster Cleanup
+    needs: test-cluster
+    runs-on: ubuntu-latest
+    steps:
+      - uses: docker://pulumi/actions
+        with:
+          args: stack select -s ${{ github.sha }} && pulumi destroy -y && pulumi stack rm -y
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+          PULUMI_CI: pr
+          PULUMI_ROOT: infra
