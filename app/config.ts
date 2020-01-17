@@ -7,11 +7,14 @@ let pulumiConfig = new pulumi.Config();
 
 // Existing Pulumi stack reference in the format:
 // <organization>/<project>/<stack> e.g. "myUser/myProject/dev"
-const clusterStackRef = new pulumi.StackReference(pulumiConfig.require("clusterStackRef"));
+const devClusterStackRef = new pulumi.StackReference(pulumiConfig.require("devClusterStackRef"));
 
 export const config = {
     gcpProject: gcpProject,
-    gkeKubeconfig: clusterStackRef.getOutput("kubeconfig"),
-    clusterName: clusterStackRef.getOutput("clusterName"),
-    appsNamespaceName: clusterStackRef.getOutput("appsNamespaceName"),
+
+    // Dev Cluster
+    gkeKubeconfig: devClusterStackRef.getOutput("kubeconfig"),
+    clusterName: devClusterStackRef.getOutput("clusterName"),
+    appsNamespaceName: devClusterStackRef.getOutput("appsappsNamespaceNameNamespaceName"),
+    devsAccountId: devClusterStackRef.getOutput("devsAccountId"),
 };
