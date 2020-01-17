@@ -6,7 +6,7 @@ on:
       - 'infra/**'
 jobs:
   preview:
-    name: Preview
+    name: Infra Preview
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
