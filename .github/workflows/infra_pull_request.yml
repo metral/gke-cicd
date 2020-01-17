@@ -61,6 +61,9 @@ jobs:
     needs: test-cluster
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
       - uses: docker://pulumi/actions
         with:
           args: stack select -s ${{ github.sha }} && pulumi destroy -y && pulumi stack rm -y
