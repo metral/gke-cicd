@@ -63,6 +63,7 @@ export class DemoApp extends pulumi.ComponentResource {
                     PASSWORD: this.secret.asEnvValue("password"),
                 },
                 image: this.imageName,
+                resources: {requests: {cpu: "50m", memory: "20Mi"}},
                 ports: { "http": 80 },
                 volumeMounts: [ this.persistentVolumeClaim.mount("/data") ],
             }],
@@ -81,5 +82,6 @@ export class DemoApp extends pulumi.ComponentResource {
         });
         this.endpoint = this.service.status.loadBalancer.ingress[0].ip;
         this.url = pulumi.interpolate`http://${this.endpoint}`;
+        // this.url = pulumi.interpolate`http://${this.service.endpoint}`;
     }
 }
