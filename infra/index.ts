@@ -37,7 +37,7 @@ util.bindToRole(`${devsName}-k8s`, devsIamServiceAccount, {
 const devsIamServiceAccountKey = util.createServiceAccountKey(`${devsName}Key`, devsIamServiceAccount);
 
 // Create the Developers ServiceAccount client secret to authenticate as this service account.
-export const devsIamServiceAccountSecret = util.clientSecret(devsIamServiceAccountKey);
+const devsIamServiceAccountSecret = util.clientSecret(devsIamServiceAccountKey);
 
 //============================================================================== 
 /*
