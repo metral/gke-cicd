@@ -12,7 +12,7 @@ const gkeProvider = new k8s.Provider("gkeProvider", {
     namespace: config.appsNamespaceName,
 });
 
-// Create the application on each of the selected clusters.
+// Create the application on the cluster.
 const instance = new app.DemoApp("demo", {
     provider: gkeProvider,
 });
