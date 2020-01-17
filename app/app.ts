@@ -68,7 +68,6 @@ export class DemoApp extends pulumi.ComponentResource {
             }],
         });
 
-        /*
         // Create a Deployment.
         this.deployment = new kx.Deployment("app-kx", {
             spec: pb.asDeploymentSpec(
@@ -82,6 +81,5 @@ export class DemoApp extends pulumi.ComponentResource {
         });
         this.endpoint = this.service.status.loadBalancer.ingress[0].ip;
         this.url = pulumi.interpolate`http://${this.endpoint}`;
-        */
     }
 }
