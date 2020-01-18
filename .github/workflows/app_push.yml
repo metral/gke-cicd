@@ -15,7 +15,7 @@ jobs:
           fetch-depth: 1
       - uses: docker://pulumi/actions
         with:
-          args: stack select -s dev  && $GITHUB_WORKSPACE/scripts/pull_down_dev_creds.sh && pulumi config set gcp:project pulumi-development && pulumi config set devClusterStackRef metral/gke-cicd/dev && pulumi up
+          args: stack select -s dev && $GITHUB_WORKSPACE/scripts/pull_down_dev_creds.sh && pulumi config set gcp:project pulumi-development && pulumi config set devClusterStackRef metral/gke-cicd/dev && pulumi up
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
