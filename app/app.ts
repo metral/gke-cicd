@@ -26,8 +26,8 @@ export class DemoApp extends pulumi.ComponentResource {
         const registry = gcp.container.getRegistryRepository();
 
         // Build a Docker image from a local Dockerfile context in the
-        // './go-app' directory, and push it to the registry.
-        const appName = "go-app";
+        // './node-app' directory, and push it to the registry.
+        const appName = "node-app";
         const appDockerContextPath = `./${appName}`;
         const appImage = new docker.Image(appName, {
             imageName: pulumi.interpolate`${registry.repositoryUrl}/${appName}:v0.0.1`,
