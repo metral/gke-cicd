@@ -14,4 +14,7 @@ gsutil cp gs://dev-sa-secret/key.json /tmp/key.json && \
 	gcloud auth configure-docker
 
 # Build the Go app.
+pushd $GITHUB_WORKSPACE/app/go-app
+echo "here: `pwd`"
 make build && make static-build
+popd
