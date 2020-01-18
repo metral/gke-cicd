@@ -9,6 +9,6 @@ if [ ! -z "$GOOGLE_CREDENTIALS" ]; then
 fi
 
 # Pull down Service Account Secret key for Developers to auth as a k8s dev.
-gsutil cp gs://${GITHUB_SHA}-sa-secret/key.json /tmp/key.json && \
+gsutil cp gs://dev-sa-secret/key.json /tmp/key.json && \
 	gcloud auth activate-service-account --key-file /tmp/key.json && \
 	gcloud auth configure-docker
