@@ -27,6 +27,7 @@ jobs:
           GITHUB_SHA: ${{ github.sha }}
           GITHUB_WORKSPACE: ${{ github.workspace }}
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          PULUMI_CI: pr
           PULUMI_ROOT: app
       - uses: docker://pulumi/actions
         with:
