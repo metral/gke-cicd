@@ -15,9 +15,10 @@ jobs:
           fetch-depth: 1
       - uses: docker://pulumi/actions
         with:
-          args: stack select -s dev && pulumi config set gcp:zone us-west1-a && pulumi config set gcp:project pulumi-development && pulumi up
+          args: stack select -s ${{ github.sha }} && $GITHUB_WORKSPACE/scripts/pull_down_dev_creds.sh && pulumi config set gcp:project pulumi-development && pulumi up
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+          GITHUB_WORKSPACE: ${{ github.workspace }}
           PULUMI_CI: up
           PULUMI_ROOT: app
