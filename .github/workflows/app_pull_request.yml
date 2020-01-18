@@ -21,9 +21,11 @@ jobs:
           PULUMI_ROOT: app
       - uses: docker://pulumi/actions
         with:
-          entrypoint: gsutil cp gs://${{ github.sha }}-sa-secret/key.json /tmp/key.json && gcloud auth activate-service-account --key-file /tmp/key.json && gcloud auth configure-docker
+          entrypoint: /bin/bash -c "scripts/pull_down_dev_creds.sh"
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+          GITHUB_SHA: ${{ github.sha }}
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
       - uses: docker://pulumi/actions
         with:
           args: stack select -s ${{ github.sha }} && pulumi preview && pulumi preview --diff
