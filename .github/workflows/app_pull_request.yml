@@ -21,10 +21,12 @@ jobs:
           PULUMI_ROOT: app
       - uses: docker://pulumi/actions
         with:
-          entrypoint: /bin/bash -c ${{ github.workspace }}/scripts/pull_down_dev_creds.sh
+          # entrypoint: /bin/bash -c ${{ github.workspace }}/scripts/pull_down_dev_creds.sh
+          entrypoint: /bin/bash -c "ls -alh . && pwd && ls -alh $GITHUB_WORKSPACE && ls -alh $GITHUB_WORKSPACE/*"
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
           GITHUB_SHA: ${{ github.sha }}
+          GITHUB_WORKSPACE: ${{ github.workspace }}
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
       - uses: docker://pulumi/actions
         with:
