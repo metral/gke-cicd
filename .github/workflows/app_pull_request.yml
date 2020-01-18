@@ -21,7 +21,7 @@ jobs:
           PULUMI_ROOT: app
       - uses: docker://pulumi/actions
         with:
-          entrypoint: "/app/scripts/pull_down_dev_creds.sh"
+          args: stack ls && /app/scripts/pull_down_dev_creds.sh
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
           GITHUB_SHA: ${{ github.sha }}
