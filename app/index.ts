@@ -5,6 +5,8 @@ import * as app from "./app";
 import {config} from "./config";
 
 export const clusterName = config.clusterName;
+export const kubeconfig = config.gkeKubeconfig;
+export const appsNamespaceName = config.appsNamespaceName;
 
 // Create a k8s provider for the remote GKE cluster.
 const gkeProvider = new k8s.Provider("gkeProvider", {
