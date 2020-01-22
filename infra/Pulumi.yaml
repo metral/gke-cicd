@@ -1,0 +1,3 @@
+name: gke-cicd
+description: Deploys a Kubernetes cluster on GKE.
+runtime: nodejs

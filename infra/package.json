@@ -1,0 +1,14 @@
+{
+    "name": "gke-cicd",
+    "devDependencies": {
+        "typescript": "^3.0.0",
+        "@types/node": "latest",
+        "@types/which": "latest"
+    },
+    "dependencies": {
+        "@pulumi/gcp": "^1.0.0",
+        "@pulumi/pulumi": "^1.0.0",
+        "@pulumi/kubernetes": "^1.0.0",
+        "@pulumi/random": "^1.0.0"
+    }
+}
