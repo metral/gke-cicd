@@ -30,7 +30,7 @@ const devsIamServiceAccount = new gcp.serviceAccount.Account(devsName, {
 // roles/storage.admin: Control GCS for use with GCR (create buckets & objects).
 util.bindToRole(`${devsName}-k8s`, devsIamServiceAccount, {
     project: config.gcpProject,
-    roles: ["roles/storage.admin"],
+    roles: ["roles/storage.admin", "roles/cloudsql.admin"],
 });
 
 // Create the Developers ServiceAccount key.
@@ -66,8 +66,8 @@ const password = new random.RandomPassword(`${projectName}-password`, {
 const cluster = new gcp.container.Cluster(`${projectName}`, {
     initialNodeCount: 1,
     podSecurityPolicyConfig: { enabled: true },
-    minMasterVersion: "1.14.8-gke.12",
-    // minMasterVersion: "1.15.7-gke.2",
+    // minMasterVersion: "1.14.8-gke.12",
+    minMasterVersion: "1.15.7-gke.23",
     masterAuth: { username: "example-user", password: password },
     nodeConfig: {
         machineType: "n1-standard-1",
