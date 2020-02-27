@@ -41,7 +41,8 @@ export const devsIamServiceAccountSecret = util.clientSecret(devsIamServiceAccou
 
 // Create a bucket for the Developers ServiceAccount key to be retrieved and
 // used by the Developers and CI/CD.
-export const devsBucketName = `${stackName}-sa-secret`;
+// export const devsBucketName = `${stackName}-sa-secret`;
+export const devsBucketName = `dev-sa-secret`;
 const devsBucket = new gcp.storage.Bucket(devsBucketName, {
     name: devsBucketName,
 });
@@ -66,8 +67,7 @@ const password = new random.RandomPassword(`${projectName}-password`, {
 const cluster = new gcp.container.Cluster(`${projectName}`, {
     initialNodeCount: 1,
     podSecurityPolicyConfig: { enabled: true },
-    minMasterVersion: "1.14.8-gke.12",
-    // minMasterVersion: "1.15.7-gke.23",
+    minMasterVersion: "1.15.9-gke.8",
     masterAuth: { username: "example-user", password: password },
     nodeConfig: {
         machineType: "n1-standard-1",
